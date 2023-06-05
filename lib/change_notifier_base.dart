@@ -30,6 +30,9 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
 
   int? _loadingType;
 
+  void Function(T data)? onData;
+  void Function(E? error)? onError;
+
   /// An async method that triggers an async `callback` (typically process)
   /// which sets the provider in its selected state.
   ///
@@ -40,7 +43,6 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
     /// A callback that has to be triggered in async in order to await the
     /// returned results if exists.
     final Future<void> Function() callback, {
-
     /// The loading type of the current working provider.
     int? loadingType = LoadingType.stateLoading,
   }) async {
@@ -111,6 +113,7 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
   set data(T? data) {
     _error = null;
     _data = data;
+    if (hasData) onData?.call(_data as T);
     idle();
   }
 
@@ -119,6 +122,7 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
   set error(E? error) {
     _data = null;
     _error = error;
+    onError?.call(_error);
     idle();
   }
 

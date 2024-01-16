@@ -6,8 +6,8 @@ A change notifier base class which helps reducing boilerplate code used in the
 ## Usage
 
 ```dart
-class AuthProvider extends BaseChangeNotifier<AuthResponse, DioError> {
-    final _authRepository;
+class AuthProvider extends BaseChangeNotifier<AuthResponse, DioException> {
+    final AuthRepository _authRepository;
 
     AuthProvider(this._authRepository);
 
@@ -19,7 +19,7 @@ class AuthProvider extends BaseChangeNotifier<AuthResponse, DioError> {
                 /// [response.data] is a [AuthResponse] type
                 data = response.data;
             } else {
-                /// [response.error] is a [DioError] type
+                /// [response.error] is a [DioException] type
                 error = response.error;
             }
         }, loadingType: LoadingType.fullscreenLoading);

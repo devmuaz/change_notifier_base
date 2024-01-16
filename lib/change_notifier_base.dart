@@ -44,7 +44,7 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
     /// returned results if exists.
     final Future<void> Function() callback, {
     /// The loading type of the current working provider.
-    int? loadingType = LoadingType.stateLoading,
+    final int? loadingType = LoadingType.stateLoading,
   }) async {
     if (!_running) {
       _running = true;
@@ -57,8 +57,13 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
           loading();
           break;
       }
-      await callback();
-      _running = false;
+      try {
+        await callback();
+      } catch (e) {
+        idle();
+      } finally {
+        _running = false;
+      }
     }
   }
 

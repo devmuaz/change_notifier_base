@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 /// The state of the `Provider` which describes whether the current working
 /// provider has a running process [loading] or not [idle].
@@ -59,7 +60,11 @@ abstract class BaseChangeNotifier<T, E> extends ChangeNotifier {
       }
       try {
         await callback();
-      } catch (e) {
+      } on PlatformException catch (e) {
+        if (kDebugMode) {
+          print('[BaseChangeNotifier] PlatformException: ${e.message}');
+          print('[BaseChangeNotifier] PlatformException: ${e.stacktrace}');
+        }
         idle();
       } finally {
         _running = false;

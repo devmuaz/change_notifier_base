@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Debug printing thrown exceptions when using `run` function
+
 ## 0.3.0
 
 - Wrapping the `callback` with `try-catch` statement to avoid runtime exceptions
